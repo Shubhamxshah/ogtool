@@ -23,7 +23,6 @@ hrefRouter.post("/href", async (req, res) => {
   const browser = await puppeteer.launch({
     headless: true,
     defaultViewport: null,
-    args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-gpu"],
   });
 
   const page = await browser.newPage();

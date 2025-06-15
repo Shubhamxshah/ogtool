@@ -1,6 +1,6 @@
 FROM node:20-slim
 
-# Puppeteer (Chromium) dependencies
+# Chromium dependencies
 RUN apt-get update && apt-get install -y \
     libasound2 \
     libatk-bridge2.0-0 \
@@ -38,19 +38,17 @@ RUN apt-get update && apt-get install -y \
     libvulkan1 \
  && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
+# Add non-root user
+RUN useradd -m pptruser
 
-# Copy app code
+WORKDIR /app
 COPY . .
 
-# Install Node dependencies
-RUN npm install
-
-# Download Chromium (if using puppeteer-core, this ensures Chrome is present)
+RUN npm ci
 RUN npx puppeteer browsers install chrome
 
-# Expose port (adjust if your app uses a different one)
-EXPOSE 3001
+USER pptruser
 
+EXPOSE 3001
 CMD ["node", "dist/index.js"]
 
