@@ -23,6 +23,7 @@ hrefRouter.post("/href", async (req, res) => {
   const browser = await puppeteer.launch({
     headless: true,
     defaultViewport: null,
+    args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-gpu"],
   });
 
   const page = await browser.newPage();
@@ -83,16 +84,14 @@ hrefRouter.post("/href", async (req, res) => {
 
   const markdown = await extractDataFromLinks(articleLinks);
 
-  res
-    .status(200)
-    .json({
-      title: "Links scraper",
-      content: markdown,
-      content_type: "blog",
-      source_url: "...",
-      author: "shubham shah",
-      user_id: "123",
-    });
+  res.status(200).json({
+    title: "Links scraper",
+    content: markdown,
+    content_type: "blog",
+    source_url: "...",
+    author: "shubham shah",
+    user_id: "123",
+  });
 
   await browser.close();
 });
