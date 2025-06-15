@@ -20,11 +20,6 @@ cd frontend
 cp .env.example .env
 pnpm install
 pnpm run dev
-```
-
-Go back to the root directory:
-
-```bash
 cd ..
 ```
 
@@ -43,67 +38,117 @@ npm start
 
 Below are example inputs you can use to test the scraper:
 
+---
+
 ### 📌 **interviewing.io blog** (href)
 
 **Source URL:**
-[https://interviewing.io/blog](https://interviewing.io/blog)
+
+```text
+https://interviewing.io/blog
+```
 
 **Tag for Article Links:**
-h1 > a\[href^="/blog/"]
+
+```text
+h1 > a[href^="/blog/"]
+```
 
 **Title Tag:**
+
+```text
 h1
+```
 
 **Markdown Tag:**
-div\[class^="leading-7"] > p
+
+```text
+div[class^="leading-7"] > p
+```
 
 ---
 
 ### 📌 **interviewing.io company guides** (href)
 
 **Source URL:**
-[https://interviewing.io/topics](https://interviewing.io/topics)
+
+```text
+https://interviewing.io/topics
+```
 
 **Tag for Article Links:**
-.flex-1.px-1.py-2.hover\:bg-gray-100 > a\[href^="/guides/"]
+
+```text
+.flex-1.px-1.py-2.hover\:bg-gray-100 > a[href^="/guides/"]
+```
 
 **Title Tag:**
-.font-serif.text-$56px$.text-white-100
+
+```text
+.font-serif.text-\[56px\].text-white-100
+```
 
 **Markdown Tag:**
-.mb-$128px$.gap-$20px$.flex-col
+
+```text
+.mb-\[128px\].gap-\[20px\].flex-col
+```
 
 ---
 
 ### 📌 **nilmamano** (href)
 
 **Source URL:**
-[https://nilmamano.com/blog/category/dsa](https://nilmamano.com/blog/category/dsa)
+
+```text
+https://nilmamano.com/blog/category/dsa
+```
 
 **Tag for Article Links:**
-.mt-4 > a\[href^="/blog/"]
+
+```text
+.mt-4 > a[href^="/blog/"]
+```
 
 **Title Tag:**
+
+```text
 .text-3xl.font-bold
+```
 
 **Markdown Tag:**
+
+```text
 .prose
+```
 
 ---
 
 ### 📌 **quill** (click)
 
 **Source URL:**
-[https://quill.co/blog](https://quill.co/blog)
+
+```text
+https://quill.co/blog
+```
 
 **Tag for Article Links:**
-.bg-white.p-$30px$.hover\:bg-slate-50
+
+```text
+.bg-white.p-\[30px\].hover\:bg-slate-50
+```
 
 **Title Tag:**
-h1\[class\*="text-\[48px]"]
+
+```text
+h1[class*="text-[48px]"]
+```
 
 **Markdown Tag:**
-.text-slate-700.px-7.md\:px-12.py-1.text-$18px$
+
+```text
+.text-slate-700.px-7.md\:px-12.py-1.text-\[18px\]
+```
 
 ---
 
