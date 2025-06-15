@@ -28,5 +28,8 @@ COPY . .
 
 RUN npm install
 
+# 👇 Install Chromium explicitly
+RUN npx puppeteer browsers install chrome
+
 CMD ["node", "dist/index.js"]
 
