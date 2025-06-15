@@ -6,8 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const ArticleClicks_1 = require("./ArticleClicks");
 const ArticleLinks_1 = require("./ArticleLinks");
+const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
+app.use((0, cors_1.default)());
 const PORT = 3001;
 app.get("/ping", (_, res) => {
     res.json("pong");

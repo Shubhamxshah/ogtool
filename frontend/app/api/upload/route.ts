@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
 
   console.log("Parsed Text Ready");
 
-  return NextResponse.json({ parsedText, fileName });
+  return NextResponse.json({ title: "pdf scraper" ,content: parsedText, content_type: "book", source_url: "...", author: "Maddie Wang", user_id: fileName});
 }
 
 

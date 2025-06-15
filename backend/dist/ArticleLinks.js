@@ -16,10 +16,17 @@ exports.hrefRouter = void 0;
 const puppeteer_1 = __importDefault(require("puppeteer"));
 const express_1 = require("express");
 exports.hrefRouter = (0, express_1.Router)();
+function unescapeSelector(selector) {
+    return selector.replace(/\\\\/g, "\\").replace(/\\"/g, '"');
+}
 exports.hrefRouter.post("/href", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { source, tagForArticleLinks, titleTag, markdownTag } = req.body;
+    // Unescape all selectors before using them
+    const cleanTagForArticleLinks = unescapeSelector(tagForArticleLinks);
+    const cleanTitleTag = unescapeSelector(titleTag);
+    const cleanMarkdownTag = unescapeSelector(markdownTag);
     const browser = yield puppeteer_1.default.launch({
-        headless: false,
+        headless: true,
         defaultViewport: null,
     });
     const page = yield browser.newPage();
@@ -31,7 +38,7 @@ exports.hrefRouter.post("/href", (req, res) => __awaiter(void 0, void 0, void 0,
         return Array.from(elements)
             .map((link) => link.href)
             .filter((href) => !!href);
-    }, tagForArticleLinks);
+    }, cleanTagForArticleLinks);
     const extractDataFromLinks = (links) => __awaiter(void 0, void 0, void 0, function* () {
         const markdown = [];
         for (const link of links) {
@@ -45,7 +52,7 @@ exports.hrefRouter.post("/href", (req, res) => __awaiter(void 0, void 0, void 0,
                     const paragraphs = Array.from(document.querySelectorAll(markdownSelector));
                     const data = paragraphs.map((p) => p.innerText).join("\n");
                     return { title, data };
-                }, titleTag, markdownTag);
+                }, cleanTitleTag, cleanMarkdownTag);
                 markdown.push(info);
             }
             catch (err) {
@@ -60,6 +67,15 @@ exports.hrefRouter.post("/href", (req, res) => __awaiter(void 0, void 0, void 0,
         return;
     }
     const markdown = yield extractDataFromLinks(articleLinks);
-    res.status(200).json(markdown);
+    res
+        .status(200)
+        .json({
+        title: "Links scraper",
+        content: markdown,
+        content_type: "blog",
+        source_url: "...",
+        author: "shubham shah",
+        user_id: "123",
+    });
     yield browser.close();
 }));

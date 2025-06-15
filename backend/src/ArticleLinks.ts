@@ -6,12 +6,21 @@ interface ScrapedArticle {
   data: string;
 }
 
-export const hrefRouter = Router()
+export const hrefRouter = Router();
+
+function unescapeSelector(selector: string): string {
+  return selector.replace(/\\\\/g, "\\").replace(/\\"/g, '"');
+}
 
 hrefRouter.post("/href", async (req, res) => {
-  const {source, tagForArticleLinks, titleTag, markdownTag} = req.body;
-  
-    const browser = await puppeteer.launch({
+  const { source, tagForArticleLinks, titleTag, markdownTag } = req.body;
+
+  // Unescape all selectors before using them
+  const cleanTagForArticleLinks = unescapeSelector(tagForArticleLinks);
+  const cleanTitleTag = unescapeSelector(titleTag);
+  const cleanMarkdownTag = unescapeSelector(markdownTag);
+
+  const browser = await puppeteer.launch({
     headless: true,
     defaultViewport: null,
   });
@@ -22,17 +31,16 @@ hrefRouter.post("/href", async (req, res) => {
     waitUntil: "domcontentloaded",
   });
 
-  const articleLinks: string[] = await page.evaluate(
-    (selector) => {
-      const elements = document.querySelectorAll<HTMLAnchorElement>(selector);
-      return Array.from(elements)
-        .map((link) => link.href)
-        .filter((href) => !!href);
-    },
-    tagForArticleLinks
-  );
+  const articleLinks: string[] = await page.evaluate((selector) => {
+    const elements = document.querySelectorAll<HTMLAnchorElement>(selector);
+    return Array.from(elements)
+      .map((link) => link.href)
+      .filter((href) => !!href);
+  }, cleanTagForArticleLinks);
 
-  const extractDataFromLinks = async (links: string[]): Promise<ScrapedArticle[]> => {
+  const extractDataFromLinks = async (
+    links: string[],
+  ): Promise<ScrapedArticle[]> => {
     const markdown: ScrapedArticle[] = [];
 
     for (const link of links) {
@@ -44,15 +52,18 @@ hrefRouter.post("/href", async (req, res) => {
         const info: ScrapedArticle = await page.evaluate(
           (titleSelector, markdownSelector) => {
             const title =
-              (document.querySelector(titleSelector) as HTMLElement | null)?.innerText || "";
+              (document.querySelector(titleSelector) as HTMLElement | null)
+                ?.innerText || "";
             const paragraphs = Array.from(
-              document.querySelectorAll(markdownSelector) as NodeListOf<HTMLElement>
+              document.querySelectorAll(
+                markdownSelector,
+              ) as NodeListOf<HTMLElement>,
             );
             const data = paragraphs.map((p) => p.innerText).join("\n");
             return { title, data };
           },
-          titleTag,
-          markdownTag
+          cleanTitleTag,
+          cleanMarkdownTag,
         );
 
         markdown.push(info);
@@ -72,8 +83,16 @@ hrefRouter.post("/href", async (req, res) => {
 
   const markdown = await extractDataFromLinks(articleLinks);
 
-  res.status(200).json(markdown)
+  res
+    .status(200)
+    .json({
+      title: "Links scraper",
+      content: markdown,
+      content_type: "blog",
+      source_url: "...",
+      author: "shubham shah",
+      user_id: "123",
+    });
 
   await browser.close();
-})
-
+});

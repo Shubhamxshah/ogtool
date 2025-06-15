@@ -1,10 +1,13 @@
 import express from 'express';
 import { clickRouter } from './ArticleClicks';
 import { hrefRouter } from './ArticleLinks';
+import cors from "cors";
+
 
 const app = express()
 
 app.use(express.json())
+app.use(cors())
 
 const PORT = 3001;
 
