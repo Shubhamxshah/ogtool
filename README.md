@@ -53,14 +53,6 @@ h1
 div[class^="leading-7"] > p
 ```
 
-### 📌 **quill** (click)
-
-```
-https://quill.co/blog
-.bg-white.p-\[30px\].hover\:bg-slate-50
-h1[class*="text-[48px]"]
-.text-slate-700.px-7.md\:px-12.py-1.text-\[18px\]
-```
 
 ### 📌 **interviewing.io company guides** (href)
 
@@ -78,6 +70,15 @@ https://nilmamano.com/blog/category/dsa
 .mt-4 > a[href^="/blog/"]
 .text-3xl.font-bold
 .prose
+```
+
+### 📌 **quill** (click)
+
+```
+https://quill.co/blog
+.bg-white.p-\[30px\].hover\:bg-slate-50
+h1[class*="text-[48px]"]
+.text-slate-700.px-7.md\:px-12.py-1.text-\[18px\]
 ```
 
 ---
