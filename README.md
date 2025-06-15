@@ -1,4 +1,3 @@
-Here’s a polished `README.md` draft for your test app with clear instructions and copyable test data:
 
 ---
 
@@ -11,7 +10,7 @@ Follow these steps to set up and run the app locally:
 ### 1️⃣ Clone the repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Shubhamxshah/ogtool
 ```
 
 ### 2️⃣ Frontend setup
@@ -42,44 +41,69 @@ npm start
 
 ## Start Testing
 
-Below are example inputs you can use to test the scraper.
+Below are example inputs you can use to test the scraper:
 
 ### 📌 **interviewing.io blog** (href)
 
-```
-https://interviewing.io/blog
-h1 > a[href^="/blog/"]
-h1
-div[class^="leading-7"] > p
-```
+**Source URL:**
+[https://interviewing.io/blog](https://interviewing.io/blog)
 
+**Tag for Article Links:**
+h1 > a\[href^="/blog/"]
+
+**Title Tag:**
+h1
+
+**Markdown Tag:**
+div\[class^="leading-7"] > p
+
+---
 
 ### 📌 **interviewing.io company guides** (href)
 
-```
-https://interviewing.io/topics
-.flex-1.px-1.py-2.hover\:bg-gray-100 > a[href^="/guides/"]
-.font-serif.text-\[56px\].text-white-100
-.mb-\[128px\].gap-\[20px\].flex-col
-```
+**Source URL:**
+[https://interviewing.io/topics](https://interviewing.io/topics)
+
+**Tag for Article Links:**
+.flex-1.px-1.py-2.hover\:bg-gray-100 > a\[href^="/guides/"]
+
+**Title Tag:**
+.font-serif.text-$56px$.text-white-100
+
+**Markdown Tag:**
+.mb-$128px$.gap-$20px$.flex-col
+
+---
 
 ### 📌 **nilmamano** (href)
 
-```
-https://nilmamano.com/blog/category/dsa
-.mt-4 > a[href^="/blog/"]
+**Source URL:**
+[https://nilmamano.com/blog/category/dsa](https://nilmamano.com/blog/category/dsa)
+
+**Tag for Article Links:**
+.mt-4 > a\[href^="/blog/"]
+
+**Title Tag:**
 .text-3xl.font-bold
+
+**Markdown Tag:**
 .prose
-```
+
+---
 
 ### 📌 **quill** (click)
 
-```
-https://quill.co/blog
-.bg-white.p-\[30px\].hover\:bg-slate-50
-h1[class*="text-[48px]"]
-.text-slate-700.px-7.md\:px-12.py-1.text-\[18px\]
-```
+**Source URL:**
+[https://quill.co/blog](https://quill.co/blog)
+
+**Tag for Article Links:**
+.bg-white.p-$30px$.hover\:bg-slate-50
+
+**Title Tag:**
+h1\[class\*="text-\[48px]"]
+
+**Markdown Tag:**
+.text-slate-700.px-7.md\:px-12.py-1.text-$18px$
 
 ---
 
