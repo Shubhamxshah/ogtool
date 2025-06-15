@@ -1,13 +1,17 @@
 import puppeteer from "puppeteer";
+import { Router } from "express";
 
-const ScrapeArticlesWithClicks = async (
-  source,
-  tagForArticleLinks,
-  titleTag,
-  markdownTag,
-) => {
+export const clickRouter = Router();
+
+interface ScrapedArticle {
+  title: string;
+  data: string;
+}
+
+clickRouter.post("/click" ,async (req, res) => {
+  const {source, tagForArticleLinks, titleTag, markdownTag} = req.body;
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     defaultViewport: null,
   });
 
@@ -17,10 +21,10 @@ const ScrapeArticlesWithClicks = async (
     waitUntil: "domcontentloaded",
   });
 
-  let links = [];
+  const links: string[] = [];
 
   // Get count of clickable elements
-  const clickableCount = await page.$$eval(
+  const clickableCount: number = await page.$$eval(
     tagForArticleLinks,
     (divs) => divs.length,
   );
@@ -28,6 +32,11 @@ const ScrapeArticlesWithClicks = async (
   for (let i = 0; i < clickableCount; i++) {
     // Re-select fresh divs because DOM is reset after navigation
     const clickableDivs = await page.$$(tagForArticleLinks);
+
+    if (i >= clickableDivs.length) {
+      console.warn(`Index ${i} is out of bounds after navigation.`);
+      break;
+    }
 
     // Click the current div
     await Promise.all([
@@ -43,17 +52,19 @@ const ScrapeArticlesWithClicks = async (
   }
 
   // Now scrape the links
-  const markdown = [];
+  const markdown: ScrapedArticle[] = [];
   for (const link of links) {
     try {
       await page.goto(link, {
         waitUntil: "domcontentloaded",
       });
 
-      const info = await page.evaluate(
-        (titleTag, markdownTag) => {
-          const title = document.querySelector(titleTag)?.innerText || "";
-          const paragraphs = Array.from(document.querySelectorAll(markdownTag));
+      const info: ScrapedArticle = await page.evaluate(
+        (titleSelector, markdownSelector) => {
+          const title = (document.querySelector(titleSelector) as HTMLElement | null)?.innerText || "";
+          const paragraphs = Array.from(
+            document.querySelectorAll(markdownSelector) as NodeListOf<HTMLElement>,
+          );
           const data = paragraphs.map((p) => p.innerText).join("\n");
           return { title, data };
         },
@@ -67,14 +78,8 @@ const ScrapeArticlesWithClicks = async (
     }
   }
 
-  console.log(markdown);
+  res.status(200).json(markdown)
 
   await browser.close();
-};
+})
 
-ScrapeArticlesWithClicks(
-  "https://quill.co/blog",
-  ".bg-white.p-\\[30px\\].hover\\:bg-slate-50",
-  'h1[class*="text-[48px]"]',
-  ".text-slate-700.px-7.md\\:px-12.py-1.text-\\[18px\\]",
-);
