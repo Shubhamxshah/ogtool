@@ -26,7 +26,7 @@ exports.hrefRouter.post("/href", (req, res) => __awaiter(void 0, void 0, void 0,
     const cleanTitleTag = unescapeSelector(titleTag);
     const cleanMarkdownTag = unescapeSelector(markdownTag);
     const browser = yield puppeteer_1.default.launch({
-        headless: true,
+        headless: false,
         defaultViewport: null,
     });
     const page = yield browser.newPage();
@@ -67,9 +67,7 @@ exports.hrefRouter.post("/href", (req, res) => __awaiter(void 0, void 0, void 0,
         return;
     }
     const markdown = yield extractDataFromLinks(articleLinks);
-    res
-        .status(200)
-        .json({
+    res.status(200).json({
         title: "Links scraper",
         content: markdown,
         content_type: "blog",

@@ -29,7 +29,7 @@ exports.clickRouter.post("/click", (req, res) => __awaiter(void 0, void 0, void 
     console.log('Original selectors:', { tagForArticleLinks, titleTag, markdownTag });
     console.log('Cleaned selectors:', { cleanTagForArticleLinks, cleanTitleTag, cleanMarkdownTag });
     const browser = yield puppeteer_1.default.launch({
-        headless: true,
+        headless: false,
         defaultViewport: null,
     });
     try {

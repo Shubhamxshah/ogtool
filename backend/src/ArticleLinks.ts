@@ -21,7 +21,7 @@ hrefRouter.post("/href", async (req, res) => {
   const cleanMarkdownTag = unescapeSelector(markdownTag);
 
   const browser = await puppeteer.launch({
-    headless: true,
+    headless: false,
     defaultViewport: null,
   });
 

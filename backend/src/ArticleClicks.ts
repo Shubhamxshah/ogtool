@@ -24,7 +24,7 @@ clickRouter.post("/click", async (req, res) => {
   console.log('Cleaned selectors:', { cleanTagForArticleLinks, cleanTitleTag, cleanMarkdownTag });
   
   const browser = await puppeteer.launch({
-    headless: true,
+    headless: false,
     defaultViewport: null,
   });
   
