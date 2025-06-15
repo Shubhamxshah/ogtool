@@ -105,8 +105,8 @@ export default function OGToolLanding() {
     try {
       const endpoint =
         webForm.selector === "click"
-          ? `${process.env.NEXT_PUBLIC_BACKEND}/click`
-          : `${process.env.NEXT_PUBLIC_BACKEND}/href`;
+          ? `${process.env.NEXT_PUBLIC_BACKEND}/api/v1/click`
+          : `${process.env.NEXT_PUBLIC_BACKEND}/api/v1/href`;
 
       // Log what we're sending to debug
       const payload = {
